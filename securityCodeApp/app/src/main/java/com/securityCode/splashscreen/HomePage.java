@@ -39,9 +39,9 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class HomePage extends AppCompatActivity {
-    Button out_btn,update_btn;
+    Button update_btn;
     TextView tokenView,emailView;
-    ImageView editProfile,imageUpload;
+    ImageView out_btn,editProfile,imageUpload;
     Dialog edit_profile_dialog;
     EditText phone_ed,name_ed,nic_ed;
 

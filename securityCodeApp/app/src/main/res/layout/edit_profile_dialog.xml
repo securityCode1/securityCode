@@ -10,7 +10,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +55,7 @@
             android:layout_width="250dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            app:boxStrokeColor="#2196F3"
+            app:boxStrokeColor="@color/green"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -73,7 +74,7 @@
             android:layout_width="250dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            app:boxStrokeColor="#2196F3"
+            app:boxStrokeColor="@color/green"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -82,7 +83,7 @@
                 android:id="@+id/phone_number"
                 android:textSize="13dp"
                 android:inputType="phone"
-                android:hint="Phone"/>
+                android:hint="Phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +91,7 @@
             android:layout_width="250dp"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            app:boxStrokeColor="#2196F3"
+            app:boxStrokeColor="@color/green"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -115,9 +116,9 @@
                 android:id="@+id/btn_update"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
                 android:clickable="true"
                 android:text="Update"
+                android:textColor="@color/white"
                 android:textStyle="bold" />
 
             <Button
@@ -125,7 +126,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:background="@android:color/white"
+                android:textColor="@color/white"
                 android:clickable="true"
                 android:text="Cancel"
                 android:textStyle="bold" />
