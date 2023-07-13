@@ -15,6 +15,7 @@ import android.graphics.Shader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,8 +27,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -39,8 +43,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class HomePage extends AppCompatActivity {
-    Button update_btn;
-    TextView tokenView,emailView;
+    Button update_btn,closeDailogButton;
+    TextView tokenView,emailView,nameView;
     ImageView out_btn,editProfile,imageUpload;
     Dialog edit_profile_dialog;
     EditText phone_ed,name_ed,nic_ed;
@@ -79,6 +83,8 @@ public class HomePage extends AppCompatActivity {
         phone_ed=edit_profile_dialog.findViewById(R.id.phone_number);
         name_ed=edit_profile_dialog.findViewById(R.id.full_name);
         nic_ed=edit_profile_dialog.findViewById(R.id.nic_number);
+        closeDailogButton=edit_profile_dialog.findViewById(R.id.btn_cancel);
+        edit_profile_dialog.setCancelable(false);
 
 //        edit_profile_dialog.setCancelable(false);
         emailView=edit_profile_dialog.findViewById(R.id.txt_email);
@@ -87,6 +93,25 @@ public class HomePage extends AppCompatActivity {
         myRef = database.getReference("users/"+UID);
         global.setPicassoImage(global.profileImageURL(UID),editProfile);
         emailAddress=FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        nameView=findViewById(R.id.tv_name);
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.child("name").getValue(String.class);
+                nameView.setText("Hi! "+value);
+//                Log.d(TAG, "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
         imageUpload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +138,13 @@ public class HomePage extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(HomePage.this, "You wanna edit your profile?", Toast.LENGTH_SHORT).show();
                 edit_profile_dialog.show();
+            }
+        });
+
+        closeDailogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edit_profile_dialog.cancel();
             }
         });
 

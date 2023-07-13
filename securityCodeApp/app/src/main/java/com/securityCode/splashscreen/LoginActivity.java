@@ -44,7 +44,13 @@ TextView tv;
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                signIn(email_ed.getText().toString(),password_ed.getText().toString());
+                String email=email_ed.getText().toString(),password=password_ed.getText().toString();
+                if(email.equals("")||password.equals("")){
+                    email_ed.setError("Required");
+                    password_ed.setError("Required");
+                }else {
+                    signIn(email, password);
+                }
             }
         });
         signup_btn.setOnClickListener(new View.OnClickListener() {
