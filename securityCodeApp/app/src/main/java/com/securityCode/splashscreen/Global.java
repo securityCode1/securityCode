@@ -23,7 +23,6 @@ public class Global{
         return URL;
     }
 
-
     public class CircleTransform implements Transformation {
         @Override
         public Bitmap transform(Bitmap source) {

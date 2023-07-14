@@ -31,9 +31,8 @@ TextView tv;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ;
-// ...
-// Initialize Firebase Auth
+
+        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         email_ed=findViewById(R.id.email_id);
         password_ed=findViewById(R.id.pass_id);
@@ -88,7 +87,6 @@ TextView tv;
                             Intent secondActivityIntent = new Intent(LoginActivity.this, HomePage.class);
                             startActivity(secondActivityIntent);
                             finish();
-//                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

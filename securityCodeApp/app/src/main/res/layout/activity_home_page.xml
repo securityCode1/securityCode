@@ -22,17 +22,15 @@
             android:text="Hi sample!"
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="30dp" />
+            android:textSize="20dp" />
 
         <ImageView
             android:id="@+id/signout_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="-35dp"
             android:layout_gravity="end"
             android:src="@drawable/baseline_power_settings_new_24" />
-
 
     </LinearLayout>
 
@@ -50,11 +48,156 @@
         android:src="@drawable/baseline_person_24" />
 </androidx.cardview.widget.CardView>
 
-
     <TextView
         android:id="@+id/tv_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/expense_card"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:paddingLeft="2dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/wallet"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/baseline_account_balance_wallet_24" />
+            <TextView
+                android:id="@+id/tv_wallet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/green"
+                android:layout_gravity="center"
+                android:text="Manage Expenses"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/securityLog_card"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="10dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="10dp"
+            android:paddingLeft="2dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/security"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="2dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/baseline_security_24" />
+            <TextView
+                android:id="@+id/tv_security"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="20dp"
+                android:layout_marginLeft="5dp"
+                android:textColor="@color/green"
+                android:layout_gravity="center"
+                android:text="View Security Logs"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp">
+        <androidx.cardview.widget.CardView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/access_card"
+            android:layout_marginRight="5dp"
+            app:cardCornerRadius="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/access"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/baseline_lock_access_24" />
+                <TextView
+                    android:id="@+id/tv_access"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/green"
+                    android:layout_gravity="center"
+                    android:text="Grant Access"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/access_test"
+            android:layout_marginLeft="5dp"
+            app:cardCornerRadius="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/testView"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/baseline_devices_other_24" />
+                <TextView
+                    android:id="@+id/tv_test"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/green"
+                    android:layout_gravity="center"
+                    android:text="Manage Devices"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
 
 </LinearLayout>
