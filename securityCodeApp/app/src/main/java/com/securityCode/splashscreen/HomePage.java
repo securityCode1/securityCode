@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,6 +65,10 @@ public class HomePage extends AppCompatActivity {
 
     Global global=new Global();
 
+    AutoCompleteTextView autoCompleteTextView  ;
+    ArrayAdapter<String> adapterItems;
+    String[] type={"Bike fuel","Grocery","Electricity bill","Gas bill","Car fuel"};
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +107,7 @@ public class HomePage extends AppCompatActivity {
         expenseCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(HomePage.this,Expense.class));
                 Toast.makeText(HomePage.this, "Expense Card clicked", Toast.LENGTH_SHORT).show();
             }
         });
