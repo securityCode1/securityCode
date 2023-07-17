@@ -101,8 +101,16 @@ public class HomePage extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                String value = dataSnapshot.child("name").getValue(String.class);
-                nameView.setText("Hi! "+value);
+
+                String name = dataSnapshot.child("name").getValue(String.class);
+                String contact = dataSnapshot.child("contact").getValue(String.class);
+                String nic = dataSnapshot.child("nic").getValue(String.class);
+                nameView.setText("Hi! "+name);
+                name_ed.setText(name);
+                phone_ed.setText(contact);
+                nic_ed.setText(nic);
+
+                global.setPicassoImage(global.profileImageURL(UID),imageUpload);
 //                Log.d(TAG, "Value is: " + value);
             }
 
@@ -127,6 +135,7 @@ public class HomePage extends AppCompatActivity {
                 myRef.child("contact").setValue(phone_ed.getText().toString());
                 myRef.child("nic").setValue(nic_ed.getText().toString());
                 uploadImage(UID);
+                edit_profile_dialog.cancel();
             }
         });
 
