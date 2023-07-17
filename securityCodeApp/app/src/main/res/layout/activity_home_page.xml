@@ -160,7 +160,7 @@ android:background="@drawable/green_bg"
                     android:layout_marginLeft="5dp"
                     android:textColor="@color/green"
                     android:layout_gravity="center"
-                    android:text="Grant Access"/>
+                    android:text="@string/grant_access"/>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
