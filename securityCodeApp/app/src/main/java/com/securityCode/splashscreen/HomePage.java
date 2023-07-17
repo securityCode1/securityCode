@@ -2,6 +2,7 @@ package com.securityCode.splashscreen;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -44,6 +45,7 @@ import java.util.UUID;
 
 public class HomePage extends AppCompatActivity {
     Button update_btn,closeDailogButton;
+    CardView expenseCard;
     TextView tokenView,emailView,nameView;
     ImageView out_btn,editProfile,imageUpload;
     Dialog edit_profile_dialog;
@@ -70,6 +72,7 @@ public class HomePage extends AppCompatActivity {
         out_btn=findViewById(R.id.signout_btn);
         tokenView=findViewById(R.id.tv_data);
         editProfile=findViewById(R.id.img_profile);
+        expenseCard=(CardView)findViewById(R.id.expense_card);
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -94,6 +97,13 @@ public class HomePage extends AppCompatActivity {
         global.setPicassoImage(global.profileImageURL(UID),editProfile);
         emailAddress=FirebaseAuth.getInstance().getCurrentUser().getEmail();
         nameView=findViewById(R.id.tv_name);
+
+        expenseCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(HomePage.this, "Expense Card clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
