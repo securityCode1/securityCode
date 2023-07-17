@@ -68,10 +68,8 @@ TextView tv;
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Toast.makeText(LoginActivity.this, "success: "+currentUser.getUid(), Toast.LENGTH_SHORT).show();
+          Toast toast=  Toast.makeText(LoginActivity.this, "success: "+currentUser.getUid(), Toast.LENGTH_SHORT);
 
-            startActivity(new Intent(LoginActivity.this, HomePage.class));
-            finish();
         }
     }
     public void signIn(String email,String password){

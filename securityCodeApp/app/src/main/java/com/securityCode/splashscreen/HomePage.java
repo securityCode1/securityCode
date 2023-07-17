@@ -162,7 +162,7 @@ public class HomePage extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.putExtra("scale", true);
+        intent.putExtra("scale", 25);
 
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }

@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/green_bg"
     android:gravity="center"
+    android:alpha="0.7"
     tools:context=".LoginActivity">
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_text_input"
@@ -13,7 +15,9 @@
         android:layout_width="250dp"
         android:layout_gravity="center"
         app:boxStrokeColor="@color/green"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:alpha="0.9"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/email_id"
@@ -22,6 +26,7 @@
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
             android:textColor="@color/black"
+
             tools:ignore="TextContrastCheck,TextContrastCheck,TextContrastCheck" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,6 +66,7 @@
             android:layout_marginRight="10dp"
             android:id="@+id/signup_btn"
             android:text="Signup"
+
             android:textColor="@color/white"/>
     </LinearLayout>
 
