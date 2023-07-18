@@ -3,19 +3,31 @@ package com.securityCode.splashscreen;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.ColorDrawable;
+import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.security.keystore.KeyGenParameterSpec;
+import android.security.keystore.KeyPermanentlyInvalidatedException;
+import android.security.keystore.KeyProperties;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -43,7 +55,20 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.UUID;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 
 public class HomePage extends AppCompatActivity {
     Button update_btn,closeDailogButton;
@@ -56,6 +81,8 @@ public class HomePage extends AppCompatActivity {
     String UID,emailAddress;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
+
+
 
     //Firebase
     FirebaseStorage storage;
@@ -87,6 +114,7 @@ public class HomePage extends AppCompatActivity {
 
         edit_profile_dialog= new Dialog(HomePage.this);
         edit_profile_dialog.setContentView(R.layout.edit_profile_dialog);
+        edit_profile_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         update_btn=edit_profile_dialog.findViewById(R.id.btn_update);
 
         phone_ed=edit_profile_dialog.findViewById(R.id.phone_number);
@@ -182,6 +210,7 @@ public class HomePage extends AppCompatActivity {
                 finish();
             }
         });
+
     }
     private void chooseImage() {
 
@@ -241,5 +270,4 @@ public class HomePage extends AppCompatActivity {
                     });
         }
     }
-
 }
