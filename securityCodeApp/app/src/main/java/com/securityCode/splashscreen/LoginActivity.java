@@ -9,9 +9,12 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +53,9 @@ import javax.crypto.SecretKey;
 public class LoginActivity extends AppCompatActivity {
     TextInputEditText email_ed,password_ed;
     Button login_btn,signup_btn;
+    Dialog progressDialog;
+    LinearProgressIndicator progressIndicator;
+    TextView textView_progress;
     TextView tv;
 
     private KeyStore keyStore;
@@ -66,6 +73,11 @@ public class LoginActivity extends AppCompatActivity {
 
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+        progressDialog=new Dialog(LoginActivity.this);
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        textView_progress=progressDialog.findViewById(R.id.tv_progress);
+        progressIndicator=progressDialog.findViewById(R.id.pd_bar);
         email_ed=findViewById(R.id.email_id);
         password_ed=findViewById(R.id.pass_id);
         login_btn= findViewById(R.id.login_btn);
@@ -164,10 +176,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     public void signIn(String email,String password){
+        progressDialog.show();
+        textView_progress.setText("Signing In");
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressIndicator.setProgress(90);
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
@@ -176,12 +191,14 @@ public class LoginActivity extends AppCompatActivity {
                             Intent secondActivityIntent = new Intent(LoginActivity.this, HomePage.class);
                             startActivity(secondActivityIntent);
                             finish();
+                            progressDialog.dismiss();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             tv.setText(""+ task.getException());
+                            progressDialog.dismiss();
 //                            updateUI(null);
                         }
                     }

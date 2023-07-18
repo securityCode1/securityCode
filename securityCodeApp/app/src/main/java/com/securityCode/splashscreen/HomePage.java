@@ -40,6 +40,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -75,9 +76,11 @@ public class HomePage extends AppCompatActivity {
     CardView expenseCard;
     TextView tokenView,emailView,nameView;
     ImageView out_btn,editProfile,imageUpload;
-    Dialog edit_profile_dialog;
+    Dialog edit_profile_dialog,progressDialog;
     EditText phone_ed,name_ed,nic_ed;
 
+    LinearProgressIndicator progressIndicator;
+    TextView textView_progress;
     String UID,emailAddress;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -111,6 +114,11 @@ public class HomePage extends AppCompatActivity {
         storageReference = storage.getReference();
 
         database = FirebaseDatabase.getInstance();
+        progressDialog=new Dialog(HomePage.this);
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        textView_progress=progressDialog.findViewById(R.id.tv_progress);
+        progressIndicator=progressDialog.findViewById(R.id.pd_bar);
 
         edit_profile_dialog= new Dialog(HomePage.this);
         edit_profile_dialog.setContentView(R.layout.edit_profile_dialog);
@@ -241,14 +249,14 @@ public class HomePage extends AppCompatActivity {
     private void uploadImage(String uid) {
         if(filePath != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
             progressDialog.show();
             StorageReference ref = storageReference.child("profiles/"+ uid);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressIndicator.setProgress(100);
+                            textView_progress.setText("Uploaded");
                             progressDialog.dismiss();
                             Toast.makeText(HomePage.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
@@ -265,9 +273,12 @@ public class HomePage extends AppCompatActivity {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
                             double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressIndicator.setProgress((int)progress);
+                            textView_progress.setText("Uploaded "+(int)progress+"%");
+
                         }
                     });
         }
     }
+
 }

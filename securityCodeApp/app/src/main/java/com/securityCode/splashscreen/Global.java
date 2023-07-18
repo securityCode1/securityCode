@@ -1,24 +1,39 @@
 package com.securityCode.splashscreen;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.graphics.drawable.ColorDrawable;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 public class Global{
 
+
     public void setPicassoImage(String url, ImageView imageView){
         Picasso.get().load(url).transform(new CircleTransform()).into(imageView);
     }
 
+    public void showProgress(Activity activity,String message,int progress){
+
+
+
+
+    }
+
     public String profileImageURL(String uid){
         String URL="https://firebasestorage.googleapis.com/v0/b/securitycode-6558f.appspot.com/o/profiles%2F"+
-                uid+ //TOKEN is added from firebase
+                uid+
                 "?alt=media&token=b0550829-d4da-4042-af6d-ccad0927771c";
         return URL;
     }
