@@ -2,5 +2,6 @@
     <string name="app_name">SecurityCode</string>
     <string name="email_hint">Email Id here...</string>
     <string name="grant_access">Grant Access</string>
+    <string name="select_or_add_expense">Select or Add Expense</string>
 
 </resources>
