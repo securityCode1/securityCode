@@ -1,7 +1,5 @@
 package com.securityCode.splashscreen;
 
-import static com.securityCode.splashscreen.R.id.btn_confirm_expense;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -9,15 +7,26 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.AdapterView;
+
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.content.Intent;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+
 
 public class Expense extends AppCompatActivity {
 
@@ -25,13 +34,20 @@ public class Expense extends AppCompatActivity {
     Dialog dialog_add_expense;
 
     MultiAutoCompleteTextView expenseType;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+    TextInputEditText expenseAmount;
+    String Uid;
+    private TextView currentTV;
     private static final String[] items = new String[]{"Bike Fuel","Electricity Bill","Gas Bill","Car Fuel"};
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
-
+        currentTV = findViewById(R.id.idTVCurrent);
+        Uid= FirebaseAuth.getInstance().getUid();
         btn_expense = findViewById(R.id.expense_btn);
         dialog_add_expense = new Dialog(Expense.this);
         dialog_add_expense.setContentView(R.layout.add_expense_dialog);
@@ -39,6 +55,7 @@ public class Expense extends AppCompatActivity {
 
         expenseType=dialog_add_expense.findViewById(R.id.expense_txt);
         btn_confirm=dialog_add_expense.findViewById(R.id.btn_confirm_expense);
+        expenseAmount=dialog_add_expense.findViewById(R.id.total_amount);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, items);
@@ -46,11 +63,22 @@ public class Expense extends AppCompatActivity {
         expenseType.setAdapter(adapter);
 
         expenseType.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        // Write a message to the database
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("users/"+Uid+"/expenseList");
+
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMMyyyyhhmmssa");
+                String expId = simpleDateFormat.format(calendar.getTime());
+                currentTV.setText(expId);
+
                 Toast.makeText(Expense.this, ": "+expenseType.getText().toString(), Toast.LENGTH_SHORT).show();
+                myRef.child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
             }
         });
         btn_expense.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +87,11 @@ public class Expense extends AppCompatActivity {
                 dialog_add_expense.show();
             }
         });
-        
-    }
-}
+
+
+
+            }
+        }
+
+
+
