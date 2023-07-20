@@ -26,8 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
-
 public class Expense extends AppCompatActivity {
 
     Button btn_expense,btn_confirm;
@@ -63,9 +61,13 @@ public class Expense extends AppCompatActivity {
         expenseType.setAdapter(adapter);
 
         expenseType.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat simpleD = new SimpleDateFormat("MMMyyyy");
+        String monthId = simpleD.format(cal.getTime());
         // Write a message to the database
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("users/"+Uid+"/expenseList");
+        myRef = database.getReference("users/"+Uid+"/expenseList/"+monthId);
 
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
@@ -73,10 +75,9 @@ public class Expense extends AppCompatActivity {
             public void onClick(View view) {
 
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMMyyyyhhmmssa");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddhhmmssa");
                 String expId = simpleDateFormat.format(calendar.getTime());
                 currentTV.setText(expId);
-
                 Toast.makeText(Expense.this, ": "+expenseType.getText().toString(), Toast.LENGTH_SHORT).show();
                 myRef.child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
             }
@@ -87,8 +88,6 @@ public class Expense extends AppCompatActivity {
                 dialog_add_expense.show();
             }
         });
-
-
 
             }
         }

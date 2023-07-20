@@ -240,7 +240,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-
     @TargetApi(Build.VERSION_CODES.M)
     public boolean cipherInit() {
         try {
