@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     LinearProgressIndicator progressIndicator;
     TextView textView_progress;
     TextView tv;
+    MaterialTextView forgotPasswordBtn;
 
     private KeyStore keyStore;
 
@@ -75,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         progressDialog=new Dialog(LoginActivity.this);
         progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.setCancelable(false);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         textView_progress=progressDialog.findViewById(R.id.tv_progress);
         progressIndicator=progressDialog.findViewById(R.id.pd_bar);
@@ -83,6 +86,35 @@ public class LoginActivity extends AppCompatActivity {
         login_btn= findViewById(R.id.login_btn);
         signup_btn=findViewById(R.id.signup_btn);
         tv=(TextView) findViewById(R.id.tv1);
+        forgotPasswordBtn=findViewById(R.id.forgotPassword);
+
+        forgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String emailText=email_ed.getText().toString();
+                if(emailText.equals("")){
+                    email_ed.setError("Add Email ID");
+                }else{
+                    progressDialog.show();
+                    textView_progress.setText("Verifying Email");
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(emailText)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @SuppressLint("ResourceAsColor")
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        tv.setTextColor(R.color.blue);
+                                        tv.setText("Email sent to "+ emailText+"\nPlease check your inbox");
+                                        progressDialog.dismiss();
+                                    }else {
+                                        tv.setText("Please check your email address");
+                                        progressDialog.dismiss();
+                                    }
+                                }
+                            });
+                }
+            }
+        });
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +137,8 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         // FingerPrint Auth is added in app uncomment to view demo
-//        // Initializing both Android Keyguard Manager and Fingerprint Manager
+
+//      // Initializing both Android Keyguard Manager and Fingerprint Manager
 //        KeyguardManager keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
 //        FingerprintManager fingerprintManager = null;
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

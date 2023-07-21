@@ -46,6 +46,15 @@
             android:hint="Password"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/forgotPassword"
+        android:layout_margin="10dp"
+        android:linksClickable="true"
+        android:textColor="@color/blue"
+        android:textStyle="bold|italic"
+        android:text="Forgot Password?"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -73,6 +82,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:layout_margin="5dp"
+        android:textSize="16dp"
         android:id="@+id/tv1"/>
     <ImageView
         android:id="@+id/fingerprint_logo"
