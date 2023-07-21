@@ -17,6 +17,7 @@
         android:id="@+id/pd_bar"
         app:trackThickness="15dp"
         app:trackCornerRadius="10dp"
+        android:indeterminate="true"
         app:indicatorColor="@color/green"/>
 
     <LinearLayout
