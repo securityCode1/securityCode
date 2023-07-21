@@ -27,7 +27,7 @@ android:background="@drawable/green_bg"
             android:id="@+id/signout_btn"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:layout_gravity="end"
             android:src="@drawable/baseline_power_settings_new_24" />
 

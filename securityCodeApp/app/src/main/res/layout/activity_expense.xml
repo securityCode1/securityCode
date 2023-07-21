@@ -8,16 +8,18 @@
     android:gravity="center"
     tools:context=".Expense">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View Balance"
+        android:id="@+id/balance_view"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Expense"
         android:id="@+id/expense_btn"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/idTVHeading"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
