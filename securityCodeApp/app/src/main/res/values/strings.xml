@@ -9,4 +9,7 @@
     <string name="fingerprint_not_enabled">Fingerprint authentication permission not enabled in your device.</string>
     <string name="fingerprint_not_registered">Register at least one fingerprint in Settings to make work Fingerprint.</string>
     <string name="lock_screen_setting_disabled">Lock screen security not enabled in Settings.</string>
+    <string name="Total_budget">0000</string>
+    <string name="Available_bal">0000</string>
+    <string name="Spent_amount">0000</string>
 </resources>

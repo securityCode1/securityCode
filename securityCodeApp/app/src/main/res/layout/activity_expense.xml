@@ -34,7 +34,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0000"
+                    android:text="@string/Total_budget"
                     android:textSize="17dp"
                     android:textColor="@color/white"/>
                 <LinearLayout
@@ -43,6 +43,7 @@
                     android:paddingLeft="25dp"
                     android:gravity="right">
                         <ImageView
+                            android:id="@+id/add_newBal"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
                             android:layout_gravity="center"
@@ -65,7 +66,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0000"
+                    android:text="@string/Available_bal"
                     android:textColor="@color/white"/>
 
             </LinearLayout>
@@ -83,7 +84,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0000"
+                    android:text="@string/Spent_amount"
                     android:textColor="@color/white"/>
 
             </LinearLayout>
@@ -94,21 +95,24 @@
                 android:gravity="center"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
-                <Button
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:text="View Balance"
-                    android:layout_marginRight="25dp"
-                    android:textColor="@color/white"
-                    android:id="@+id/balance_view"/>
 
                 <Button
+                    android:id="@+id/balance_view"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="25dp"
+                    android:text="View Balance"
+                    android:textColor="@color/white"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <Button
+                    android:id="@+id/expense_btn"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
                     android:text="Add Expense"
                     android:textColor="@color/white"
-                    android:layout_marginLeft="25dp"
-                    android:id="@+id/expense_btn"/>
+                    tools:ignore="TouchTargetSizeCheck" />
 
             </LinearLayout>
 
