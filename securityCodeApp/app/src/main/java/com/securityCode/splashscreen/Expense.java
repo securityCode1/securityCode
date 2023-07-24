@@ -1,5 +1,7 @@
 package com.securityCode.splashscreen;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -25,8 +27,11 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Expense extends AppCompatActivity {
 
@@ -57,7 +62,7 @@ TextView totalbudget;
         dialog_add_balance=new Dialog(Expense.this);
         dialog_add_balance.setContentView(R.layout.activity_balance_upgrade);
         dialog_add_balance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+totalbudget=findViewById(R.id.total_budget);
 
         Update_bal=dialog_add_balance.findViewById(R.id.bal_update);
         New_amount=dialog_add_balance.findViewById(R.id.New_amount);
@@ -84,6 +89,23 @@ TextView totalbudget;
         String monthId = simpleD.format(cal.getTime());
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("users/"+Uid+"/expenseList/"+monthId);
+
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                String value = dataSnapshot.child("Total Balance").getValue(String.class);
+                totalbudget.setText(value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +138,7 @@ TextView totalbudget;
             public void onClick(View view) {
                 Toast.makeText(Expense.this, " BALANCE UPDATED:"+New_amount, Toast.LENGTH_SHORT).show();
                myRef.child("Total Balance").setValue(New_amount.getText().toString());
+               dialog_add_balance.cancel();
             }
         });
 
@@ -134,8 +157,5 @@ TextView totalbudget;
                 dialog_add_expense.cancel();
             }
         });
-            }
-        }
-
-
-
+    }
+}
