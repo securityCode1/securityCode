@@ -31,7 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Expense extends AppCompatActivity {
 
     Button btn_expense,btn_confirm,Update_bal,cancel_btn,btn_cancel;
-
+TextView totalbudget;
     TextInputEditText New_amount;
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -63,7 +63,7 @@ public class Expense extends AppCompatActivity {
         New_amount=dialog_add_balance.findViewById(R.id.New_amount);
         currentTv=dialog_add_balance.findViewById(R.id.TvCurrent);
         cancel_btn=dialog_add_balance.findViewById(R.id.btn_cancel);
-
+        totalbudget=findViewById(R.id.total_budget);
         new_balance=findViewById(R.id.add_newBal);
         dialog_add_expense = new Dialog(Expense.this);
         dialog_add_expense.setContentView(R.layout.add_expense_dialog);
@@ -83,18 +83,17 @@ public class Expense extends AppCompatActivity {
         SimpleDateFormat simpleD = new SimpleDateFormat("MMMyyyy");
         String monthId = simpleD.format(cal.getTime());
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("users/"+Uid+"/expenseList/"+monthId+"/Balance/");
+        myRef = database.getReference("users/"+Uid+"/expenseList/"+monthId);
 
         btn_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dMMMyyyy");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddhhMMssa");
                 String expId = simpleDateFormat.format(calendar.getTime());
-                currentTV.setText(expId);
                 Toast.makeText(Expense.this, ": "+expenseType.getText().toString(), Toast.LENGTH_SHORT).show();
-                myRef.child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
+                myRef.child("Expenses").child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
             }
         });
         btn_expense.setOnClickListener(new View.OnClickListener() {
@@ -115,9 +114,8 @@ public class Expense extends AppCompatActivity {
         Update_bal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentTV.setText(monthId);
-                Toast.makeText(Expense.this, " BALANCE UPDATED", Toast.LENGTH_SHORT).show();
-               myRef.child(monthId).child(New_amount.getText().toString()).setValue(New_amount.getText().toString());
+                Toast.makeText(Expense.this, " BALANCE UPDATED:"+New_amount, Toast.LENGTH_SHORT).show();
+               myRef.child("Total Balance").setValue(New_amount.getText().toString());
             }
         });
 
