@@ -39,7 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Expense extends AppCompatActivity {
 
     Button btn_expense,btn_confirm,Update_bal,cancel_btn,btn_cancel;
-TextView totalbudget;
+    TextView totalbudget;
     TextInputEditText New_amount;
     FirebaseDatabase database;
     DatabaseReference myRef,myRefList;
@@ -64,6 +64,7 @@ TextView totalbudget;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
         currentTV = findViewById(R.id.idTVCurrent);
+
         Uid= FirebaseAuth.getInstance().getUid();
         btn_expense = findViewById(R.id.expense_btn);
         lv_expense=findViewById(R.id.list_expense);
@@ -71,7 +72,6 @@ TextView totalbudget;
         dialog_add_balance.setContentView(R.layout.activity_balance_upgrade);
         dialog_add_balance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         totalbudget=findViewById(R.id.total_budget);
-
 
         Update_bal=dialog_add_balance.findViewById(R.id.bal_update);
         New_amount=dialog_add_balance.findViewById(R.id.New_amount);
@@ -103,6 +103,7 @@ TextView totalbudget;
         myRefList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                arr.clear();
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     // TODO: handle the post
 //                    Toast.makeText(Expense.this, ""+postSnapshot.getKey(), Toast.LENGTH_SHORT).show();
