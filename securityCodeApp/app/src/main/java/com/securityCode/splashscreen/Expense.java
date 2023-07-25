@@ -94,9 +94,9 @@ totalbudget=findViewById(R.id.total_budget);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot postSnapshot: dataSnapshot.child("Expenses").getChildren()) {
                     // TODO: handle the post
-                    Toast.makeText(Expense.this, ""+dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Expense.this, ""+postSnapshot.getKey(), Toast.LENGTH_SHORT).show();
                     Toast.makeText(Expense.this, ""+postSnapshot.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
