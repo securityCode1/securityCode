@@ -2,6 +2,7 @@ package com.securityCode.splashscreen;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -89,6 +90,24 @@ totalbudget=findViewById(R.id.total_budget);
         String monthId = simpleD.format(cal.getTime());
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("users/"+Uid+"/expenseList/"+monthId);
+        // My top posts by number of stars
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
+                    // TODO: handle the post
+                    Toast.makeText(Expense.this, ""+dataSnapshot.toString(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Expense.this, ""+postSnapshot.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        });
 
         // Read from the database
         myRef.addValueEventListener(new ValueEventListener() {
