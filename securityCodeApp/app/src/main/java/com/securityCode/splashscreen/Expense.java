@@ -20,6 +20,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,9 +56,9 @@ public class Expense extends AppCompatActivity {
     ArrayList<String> arrCost=new ArrayList<String>();
 
 
-    private TextView dialogcurrentTV,totalbudget,currentTV;
+    private TextView dialogcurrentTV,totalbudget,currentTV,totalSpent;
     private static final String[] items = new String[]{"Bike Fuel","Electricity Bill","Gas Bill","Car Fuel"};
-
+    double sum = 0;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class Expense extends AppCompatActivity {
         dialog_add_balance.setContentView(R.layout.activity_balance_upgrade);
         dialog_add_balance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         totalbudget=findViewById(R.id.total_budget);
+        totalSpent=findViewById(R.id.spent_total);
 
         Update_bal=dialog_add_balance.findViewById(R.id.bal_update);
         New_amount=dialog_add_balance.findViewById(R.id.New_amount);
@@ -104,10 +106,15 @@ public class Expense extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 arr.clear();
+                arrCost.clear();
+                arrTime.clear();
+                sum=0;
+                int spentCost=0;
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     // TODO: handle the post
 //                    Toast.makeText(Expense.this, ""+postSnapshot.getKey(), Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(Expense.this, ""+postSnapshot.toString(), Toast.LENGTH_SHORT).show();
+
                     String timeVaue=(postSnapshot.getKey());
                     String expenseNameCost=postSnapshot.getValue().toString();
                     dateFormat = (timeVaue.substring(0,2))+" "+
@@ -116,14 +123,28 @@ public class Expense extends AppCompatActivity {
                             timeVaue.substring(4,6)+""+
                             timeVaue.substring(8);
                     expenseName=expenseNameCost.substring(1,expenseNameCost.indexOf("="));
+                    String cost=(expenseNameCost.substring(expenseNameCost.indexOf("=")+1,expenseNameCost.lastIndexOf("}")));
 
                     arr.add(expenseName);
                     arrTime.add(dateFormat);
-                    arrCost.add(expenseNameCost.substring(expenseNameCost.indexOf("=")+1,expenseNameCost.lastIndexOf("}")));
+                    arrCost.add(cost);
 
                 }
                 CustomAdapter customAdapter=new CustomAdapter(Expense.this,arr,arrTime,arrCost);
                 lv_expense.setAdapter(customAdapter);
+
+                for(int i = 0; i < arrCost.size(); i++) {
+                    sum += Integer.parseInt(arrCost.get(i));
+                }
+                totalSpent.setText(sum+"");
+                // Update available balance here
+
+                lv_expense.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Toast.makeText(Expense.this, ""+arr.get(i), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
