@@ -56,9 +56,9 @@ public class Expense extends AppCompatActivity {
     ArrayList<String> arrCost=new ArrayList<String>();
 
 
-    private TextView dialogcurrentTV,totalbudget,currentTV,totalSpent;
+    private TextView dialogcurrentTV,totalbudget,currentTV,totalSpent,availableBal;
     private static final String[] items = new String[]{"Bike Fuel","Electricity Bill","Gas Bill","Car Fuel"};
-    double sum = 0;
+    int sum = 0;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class Expense extends AppCompatActivity {
         dialog_add_balance.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         totalbudget=findViewById(R.id.total_budget);
         totalSpent=findViewById(R.id.spent_total);
+        availableBal=findViewById(R.id.avail_bal);
 
         Update_bal=dialog_add_balance.findViewById(R.id.bal_update);
         New_amount=dialog_add_balance.findViewById(R.id.New_amount);
@@ -162,6 +163,16 @@ public class Expense extends AppCompatActivity {
                 // whenever data at this location is updated.
                 String value = dataSnapshot.child("Total Balance").getValue(String.class);
                 totalbudget.setText(value);
+                if(totalbudget.getText().toString().equals("")){
+                    totalbudget.setText("Add monthly balance");
+                }else{
+                    if(Integer.parseInt(value)<sum){
+                    availableBal.setText("You spent you all balance");
+                    }else{
+                        int i=(Integer.parseInt(value))-sum;
+                        availableBal.setText(i+"");
+                    }
+                }
             }
 
             @Override
