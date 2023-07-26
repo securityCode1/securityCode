@@ -1,5 +1,7 @@
 package com.securityCode.splashscreen;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,7 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.list_layout, null);
+        view.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         TextView titleV = (TextView) view.findViewById(R.id.textView);
         TextView titleC = (TextView) view.findViewById(R.id.textCost);
         TextView titleT = (TextView) view.findViewById(R.id.textTimeDate);
