@@ -39,23 +39,20 @@ import com.google.firebase.database.ValueEventListener;
 public class Expense extends AppCompatActivity {
 
     Button btn_expense,btn_confirm,Update_bal,cancel_btn,btn_cancel;
-    TextView totalbudget;
-    TextInputEditText New_amount;
+    TextInputEditText New_amount, expenseAmount;
     FirebaseDatabase database;
     DatabaseReference myRef,myRefList;
-    String Uid;
+    String Uid, dateFormat, expenseName, expenseCost;
     Dialog dialog_add_expense,dialog_add_balance;
     ImageView new_balance;
 
     MultiAutoCompleteTextView expenseType;
-
-    TextInputEditText expenseAmount;
     ListView lv_expense;
 
     ArrayAdapter adapter;
     ArrayList<String> arr=new ArrayList<String>();
 
-    private TextView currentTV,currentTv;
+    private TextView dialogcurrentTV,totalbudget,currentTV;
     private static final String[] items = new String[]{"Bike Fuel","Electricity Bill","Gas Bill","Car Fuel"};
 
     @SuppressLint("MissingInflatedId")
@@ -75,7 +72,7 @@ public class Expense extends AppCompatActivity {
 
         Update_bal=dialog_add_balance.findViewById(R.id.bal_update);
         New_amount=dialog_add_balance.findViewById(R.id.New_amount);
-        currentTv=dialog_add_balance.findViewById(R.id.TvCurrent);
+        dialogcurrentTV=dialog_add_balance.findViewById(R.id.TvCurrent);
         cancel_btn=dialog_add_balance.findViewById(R.id.btn_cancel);
         totalbudget=findViewById(R.id.total_budget);
         new_balance=findViewById(R.id.add_newBal);
@@ -108,8 +105,19 @@ public class Expense extends AppCompatActivity {
                     // TODO: handle the post
 //                    Toast.makeText(Expense.this, ""+postSnapshot.getKey(), Toast.LENGTH_SHORT).show();
 //                    Toast.makeText(Expense.this, ""+postSnapshot.toString(), Toast.LENGTH_SHORT).show();
-                    arr.add(postSnapshot.getKey()+"\n"+postSnapshot.getValue().toString());
-                    adapter[0] =new ArrayAdapter<>(Expense.this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,arr);
+                    String timeVaue=(postSnapshot.getKey());
+                    String expenseNameCost=postSnapshot.getValue().toString();
+                    dateFormat = (timeVaue.substring(0,2))+" "+
+                            monthId.substring(0,3)+" "+
+                            (timeVaue.substring(2,4))+":"+
+                            timeVaue.substring(4,6)+""+
+                            timeVaue.substring(8);
+                    expenseName=expenseNameCost.substring(1,expenseNameCost.indexOf("="))+" "+
+                            expenseNameCost.substring(expenseNameCost.indexOf("=")+1,expenseNameCost.lastIndexOf("}"));
+
+                    arr.add(expenseName+" => "+dateFormat);
+                    adapter[0] =new ArrayAdapter<>(Expense.this,
+                            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,arr);
                     lv_expense.setAdapter(adapter[0]);
                 }
             }
@@ -143,7 +151,7 @@ public class Expense extends AppCompatActivity {
             public void onClick(View view) {
 
                 Calendar calendar = Calendar.getInstance();
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddhhMMssa");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddhhmmssa");
                 String expId = simpleDateFormat.format(calendar.getTime());
                 Toast.makeText(Expense.this, ": "+expenseType.getText().toString(), Toast.LENGTH_SHORT).show();
                 myRef.child("Expenses").child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
@@ -176,9 +184,7 @@ public class Expense extends AppCompatActivity {
         cancel_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                     dialog_add_balance.cancel();
-
             }
         });
 
