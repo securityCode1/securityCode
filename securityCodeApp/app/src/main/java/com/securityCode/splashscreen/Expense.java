@@ -51,6 +51,9 @@ public class Expense extends AppCompatActivity {
 
     ArrayAdapter adapter;
     ArrayList<String> arr=new ArrayList<String>();
+    ArrayList<String> arrTime=new ArrayList<String>();
+    ArrayList<String> arrCost=new ArrayList<String>();
+
 
     private TextView dialogcurrentTV,totalbudget,currentTV;
     private static final String[] items = new String[]{"Bike Fuel","Electricity Bill","Gas Bill","Car Fuel"};
@@ -112,16 +115,16 @@ public class Expense extends AppCompatActivity {
                             (timeVaue.substring(2,4))+":"+
                             timeVaue.substring(4,6)+""+
                             timeVaue.substring(8);
-                    expenseName=expenseNameCost.substring(1,expenseNameCost.indexOf("="))+" "+
-                            expenseNameCost.substring(expenseNameCost.indexOf("=")+1,expenseNameCost.lastIndexOf("}"));
+                    expenseName=expenseNameCost.substring(1,expenseNameCost.indexOf("="));
 
-                    arr.add(expenseName+" => "+dateFormat);
-                    adapter[0] =new ArrayAdapter<>(Expense.this,
-                            androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,arr);
-                    lv_expense.setAdapter(adapter[0]);
+                    arr.add(expenseName);
+                    arrTime.add(dateFormat);
+                    arrCost.add(expenseNameCost.substring(expenseNameCost.indexOf("=")+1,expenseNameCost.lastIndexOf("}")));
+
                 }
+                CustomAdapter customAdapter=new CustomAdapter(Expense.this,arr,arrTime,arrCost);
+                lv_expense.setAdapter(customAdapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 // Getting Post failed, log a message
