@@ -4,13 +4,16 @@ import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.KeyguardManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -21,6 +24,7 @@ import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -95,23 +99,45 @@ public class LoginActivity extends AppCompatActivity {
                 if(emailText.equals("")){
                     email_ed.setError("Add Email ID");
                 }else{
-                    progressDialog.show();
-                    textView_progress.setText("Verifying Email");
-                    FirebaseAuth.getInstance().sendPasswordResetEmail(emailText)
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @SuppressLint("ResourceAsColor")
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        tv.setTextColor(R.color.blue);
-                                        tv.setText("Email sent to "+ emailText+"\nPlease check your inbox");
-                                        progressDialog.dismiss();
-                                    }else {
-                                        tv.setText("Please check your email address");
-                                        progressDialog.dismiss();
-                                    }
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(LoginActivity.this);
+                    builder1.setTitle(Html.fromHtml("<font color='#FF7F27'><b>Forgot Password?</b></font>"));
+                    builder1.setMessage("Verify your email: "+emailText);
+                    builder1.setCancelable(false);
+                    builder1.setPositiveButton(
+                            Html.fromHtml("<font color='#FF7F27'>Yes</font>"),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    progressDialog.show();
+                                    textView_progress.setText("Verifying Email");
+                                    FirebaseAuth.getInstance().sendPasswordResetEmail(emailText)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @SuppressLint("ResourceAsColor")
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        tv.setTextColor(R.color.blue);
+                                                        tv.setText("Email sent to "+ emailText+"\nPlease check your inbox");
+                                                        progressDialog.dismiss();
+                                                    }else {
+                                                        tv.setText("Please check your email address");
+                                                        progressDialog.dismiss();
+                                                    }
+                                                }
+                                            });
+                                    dialog.cancel();
                                 }
                             });
+
+                    builder1.setNegativeButton(
+                            "No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
                 }
             }
         });
@@ -203,7 +229,6 @@ public class LoginActivity extends AppCompatActivity {
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-          Toast toast=  Toast.makeText(LoginActivity.this, "success: "+currentUser.getUid(), Toast.LENGTH_SHORT);
             startActivity(new Intent(LoginActivity.this, HomePage.class));
             finish();
         }

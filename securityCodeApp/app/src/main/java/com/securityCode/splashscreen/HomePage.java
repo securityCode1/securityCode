@@ -144,7 +144,6 @@ public class HomePage extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(HomePage.this,Expense.class));
-                Toast.makeText(HomePage.this, "Expense Card clicked", Toast.LENGTH_SHORT).show();
             }
         });
 

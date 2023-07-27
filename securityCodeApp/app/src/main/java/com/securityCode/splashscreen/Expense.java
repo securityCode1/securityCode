@@ -188,7 +188,6 @@ public class Expense extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddhhmmssa");
                 String expId = simpleDateFormat.format(calendar.getTime());
-                Toast.makeText(Expense.this, ": "+expenseType.getText().toString(), Toast.LENGTH_SHORT).show();
                 myRef.child("Expenses").child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
             }
         });
