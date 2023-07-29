@@ -16,6 +16,9 @@
         android:theme="@style/Theme.SplashScreen"
         tools:targetApi="31">
         <activity
+            android:name=".Securitylog"
+            android:exported="false" />
+        <activity
             android:name=".Balance_upgrade"
             android:exported="false" />
         <activity

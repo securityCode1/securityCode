@@ -35,6 +35,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,19 +73,17 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 
 public class HomePage extends AppCompatActivity {
-    Button update_btn,closeDailogButton;
-    CardView expenseCard;
-    TextView tokenView,emailView,nameView;
-    ImageView out_btn,editProfile,imageUpload;
-    Dialog edit_profile_dialog,progressDialog;
-    EditText phone_ed,name_ed,nic_ed;
-
+    Button update_btn, closeDailogButton;
+    CardView expenseCard,Grant_access,securityCard;
+    TextView tokenView, emailView, nameView;
+    ImageView out_btn, editProfile, imageUpload;
+    Dialog edit_profile_dialog, progressDialog, grantaccessdialog;
+    EditText phone_ed, name_ed, nic_ed;
     LinearProgressIndicator progressIndicator;
     TextView textView_progress;
-    String UID,emailAddress;
+    String UID, emailAddress;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
-
 
 
     //Firebase
@@ -93,57 +92,75 @@ public class HomePage extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference myRef;
 
-    Global global=new Global();
+    Global global = new Global();
 
-    AutoCompleteTextView autoCompleteTextView  ;
+    AutoCompleteTextView autoCompleteTextView;
     ArrayAdapter<String> adapterItems;
-    String[] type={"Bike fuel","Grocery","Electricity bill","Gas bill","Car fuel"};
+    String[] type = {"Bike fuel", "Grocery", "Electricity bill", "Gas bill", "Car fuel"};
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "WrongViewCast"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home_page);
-        out_btn=findViewById(R.id.signout_btn);
-        tokenView=findViewById(R.id.tv_data);
-        editProfile=findViewById(R.id.img_profile);
-        expenseCard=(CardView)findViewById(R.id.expense_card);
-
+        out_btn = findViewById(R.id.signout_btn);
+        tokenView = findViewById(R.id.tv_data);
+        editProfile = findViewById(R.id.img_profile);
+        expenseCard = (CardView) findViewById(R.id.expense_card);
+        securityCard=(CardView) findViewById(R.id.securityLog_card);
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
         database = FirebaseDatabase.getInstance();
-        progressDialog=new Dialog(HomePage.this);
+        progressDialog = new Dialog(HomePage.this);
         progressDialog.setContentView(R.layout.progress_dialog);
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        textView_progress=progressDialog.findViewById(R.id.tv_progress);
-        progressIndicator=progressDialog.findViewById(R.id.pd_bar);
+        textView_progress = progressDialog.findViewById(R.id.tv_progress);
+        progressIndicator = progressDialog.findViewById(R.id.pd_bar);
 
-        edit_profile_dialog= new Dialog(HomePage.this);
+        edit_profile_dialog = new Dialog(HomePage.this);
         edit_profile_dialog.setContentView(R.layout.edit_profile_dialog);
         edit_profile_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        update_btn=edit_profile_dialog.findViewById(R.id.btn_update);
+        update_btn = edit_profile_dialog.findViewById(R.id.btn_update);
 
-        phone_ed=edit_profile_dialog.findViewById(R.id.phone_number);
-        name_ed=edit_profile_dialog.findViewById(R.id.full_name);
-        nic_ed=edit_profile_dialog.findViewById(R.id.nic_number);
-        closeDailogButton=edit_profile_dialog.findViewById(R.id.btn_cancel);
+        phone_ed = edit_profile_dialog.findViewById(R.id.phone_number);
+        name_ed = edit_profile_dialog.findViewById(R.id.full_name);
+        nic_ed = edit_profile_dialog.findViewById(R.id.nic_number);
+        closeDailogButton = edit_profile_dialog.findViewById(R.id.btn_cancel);
         edit_profile_dialog.setCancelable(false);
 
+        Grant_access = (CardView) findViewById(R.id.access_card);
+        grantaccessdialog = new Dialog(HomePage.this);
+        grantaccessdialog.setContentView(R.layout.grant_access_dialog);
+        grantaccessdialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 //        edit_profile_dialog.setCancelable(false);
-        emailView=edit_profile_dialog.findViewById(R.id.txt_email);
-        imageUpload=edit_profile_dialog.findViewById(R.id.profile_image);
-        UID=FirebaseAuth.getInstance().getUid();
-        myRef = database.getReference("users/"+UID);
-        global.setPicassoImage(global.profileImageURL(UID),editProfile);
-        emailAddress=FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        nameView=findViewById(R.id.tv_name);
+        emailView = edit_profile_dialog.findViewById(R.id.txt_email);
+        imageUpload = edit_profile_dialog.findViewById(R.id.profile_image);
+        UID = FirebaseAuth.getInstance().getUid();
+        myRef = database.getReference("users/" + UID);
+        global.setPicassoImage(global.profileImageURL(UID), editProfile);
+        emailAddress = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        nameView = findViewById(R.id.tv_name);
 
         expenseCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(HomePage.this,Expense.class));
+                startActivity(new Intent(HomePage.this, Expense.class));
+            }
+        });
+
+        securityCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomePage.this, Securitylog.class));
+            }
+        });
+        Grant_access.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                grantaccessdialog.show();
             }
         });
 
@@ -157,12 +174,12 @@ public class HomePage extends AppCompatActivity {
                 String name = dataSnapshot.child("name").getValue(String.class);
                 String contact = dataSnapshot.child("contact").getValue(String.class);
                 String nic = dataSnapshot.child("nic").getValue(String.class);
-                nameView.setText("Hi! "+name);
+                nameView.setText("Hi! " + name);
                 name_ed.setText(name);
                 phone_ed.setText(contact);
                 nic_ed.setText(nic);
 
-                global.setPicassoImage(global.profileImageURL(UID),imageUpload);
+                global.setPicassoImage(global.profileImageURL(UID), imageUpload);
 //                Log.d(TAG, "Value is: " + value);
             }
 
@@ -191,7 +208,7 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        emailView.setText("Email ID: "+FirebaseAuth.getInstance().getCurrentUser().getEmail()+"\nUID: "+UID);
+        emailView.setText("Email ID: " + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "\nUID: " + UID);
 
 
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -219,6 +236,7 @@ public class HomePage extends AppCompatActivity {
         });
 
     }
+
     private void chooseImage() {
 
         Intent intent = new Intent();
@@ -228,28 +246,26 @@ public class HomePage extends AppCompatActivity {
 
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 imageUpload.setImageBitmap(bitmap);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
+
     private void uploadImage(String uid) {
-        if(filePath != null)
-        {
+        if (filePath != null) {
             progressDialog.show();
-            StorageReference ref = storageReference.child("profiles/"+ uid);
+            StorageReference ref = storageReference.child("profiles/" + uid);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -264,20 +280,22 @@ public class HomePage extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(HomePage.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomePage.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressIndicator.setProgress((int)progress);
-                            textView_progress.setText("Uploaded "+(int)progress+"%");
+                            progressIndicator.setProgress((int) progress);
+                            textView_progress.setText("Uploaded " + (int) progress + "%");
 
                         }
                     });
-        }
-    }
 
+
+        }
+
+    }
 }

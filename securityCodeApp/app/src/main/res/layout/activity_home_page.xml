@@ -151,16 +151,18 @@
                     android:layout_height="60dp"
                     android:layout_margin="5dp"
                     android:src="@drawable/baseline_lock_access_24" />
+
                 <TextView
                     android:id="@+id/tv_access"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="12dp"
-                    android:layout_marginBottom="5dp"
-                    android:textColor="@color/green"
                     android:layout_gravity="center"
-                    android:text="@string/grant_access"/>
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/grant_access"
+                    android:textColor="@color/green"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    tools:ignore="TextSizeCheck" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -183,16 +185,18 @@
                     android:layout_height="60dp"
                     android:layout_margin="5dp"
                     android:src="@drawable/baseline_devices_other_24" />
+
                 <TextView
                     android:id="@+id/tv_test"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="12dp"
-                    android:textColor="@color/green"
                     android:layout_gravity="center"
-                    android:text="Manage Devices"/>
+                    android:layout_marginBottom="5dp"
+                    android:text="Manage Devices"
+                    android:textColor="@color/green"
+                    android:textSize="12dp"
+                    android:textStyle="bold"
+                    tools:ignore="TextSizeCheck" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
