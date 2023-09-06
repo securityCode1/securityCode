@@ -24,7 +24,6 @@ import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.storage.StorageManager;
 import android.provider.MediaStore;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
@@ -57,7 +56,6 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -205,7 +203,7 @@ public class HomePage extends AppCompatActivity {
                 myRef.child("email").setValue(emailAddress);
                 myRef.child("contact").setValue(phone_ed.getText().toString());
                 myRef.child("nic").setValue(nic_ed.getText().toString());
-
+                uploadImage(UID);
                 edit_profile_dialog.cancel();
             }
         });
@@ -257,23 +255,18 @@ public class HomePage extends AppCompatActivity {
             filePath = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                ByteArrayOutputStream stream =new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat .JPEG,50,stream);
                 imageUpload.setImageBitmap(bitmap);
-                byte[] imageByte =stream.toByteArray();
-                uploadImage(imageByte);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void uploadImage( byte[] imageByte) {
+    private void uploadImage(String uid) {
         if (filePath != null) {
             progressDialog.show();
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference("image").child(System.currentTimeMillis()+".jpeg");
-                    storageReference.putBytes(imageByte)
+            StorageReference ref = storageReference.child("profiles/" + uid);
+            ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

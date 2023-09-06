@@ -10,7 +10,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.number.IntegerWidth;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import java.text.SimpleDateFormat;
@@ -19,7 +18,6 @@ import java.util.Calendar;
 import java.util.Date;
 import android.text.format.Time;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 
 import android.widget.AdapterView;
@@ -42,7 +40,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Expense extends AppCompatActivity {
 
     Button btn_expense,btn_confirm,Update_bal,cancel_btn,btn_cancel;
-    TextInputEditText New_amount, expenseAmount,totalAmount;
+    TextInputEditText New_amount, expenseAmount;
     FirebaseDatabase database;
     DatabaseReference myRef,myRefList;
     String Uid, dateFormat, expenseName, expenseCost;
@@ -87,7 +85,6 @@ public class Expense extends AppCompatActivity {
         dialog_add_expense = new Dialog(Expense.this);
         dialog_add_expense.setContentView(R.layout.add_expense_dialog);
         dialog_add_expense.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        totalAmount=dialog_add_expense.findViewById(R.id.total_amount);
         expenseType=dialog_add_expense.findViewById(R.id.expense_txt);
         btn_confirm=dialog_add_expense.findViewById(R.id.btn_confirm_expense);
         expenseAmount=dialog_add_expense.findViewById(R.id.total_amount);
@@ -115,14 +112,14 @@ public class Expense extends AppCompatActivity {
                 sum=0;
                 int spentCost=0;
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                   // TODO: handle the post
-                    Toast.makeText(Expense.this, ""+postSnapshot.getKey(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(Expense.this, ""+postSnapshot.toString(), Toast.LENGTH_SHORT).show();
+                    // TODO: handle the post
+//                    Toast.makeText(Expense.this, ""+postSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Expense.this, ""+postSnapshot.toString(), Toast.LENGTH_SHORT).show();
 
                     String timeVaue=(postSnapshot.getKey());
                     String expenseNameCost=postSnapshot.getValue().toString();
                     dateFormat = (timeVaue.substring(0,2))+" "+
-                             monthId.substring(0,3)+" "+
+                            monthId.substring(0,3)+" "+
                             (timeVaue.substring(2,4))+":"+
                             timeVaue.substring(4,6)+""+
                             timeVaue.substring(8);
@@ -170,7 +167,7 @@ public class Expense extends AppCompatActivity {
                     totalbudget.setText("Add monthly balance");
                 }else{
                     if(Integer.parseInt(value)<sum){
-                    availableBal.setText("You spent your all balance");
+                    availableBal.setText("You spent you all balance");
                     }else{
                         int i=(Integer.parseInt(value))-sum;
                         availableBal.setText(i+"");
@@ -188,22 +185,10 @@ public class Expense extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-
-                String amount=totalAmount.getText().toString();
-
-                if((Long.parseLong(amount)<=0)){
-                  expenseAmount.setError("Empty!");
-
-
-                }else{
-                    Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddhhmmssa");
-                    String expId = simpleDateFormat.format(calendar.getTime());
-                    myRef.child("Expenses").child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
-
-                }
-
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddhhmmssa");
+                String expId = simpleDateFormat.format(calendar.getTime());
+                myRef.child("Expenses").child(expId).child(expenseType.getText().toString()).setValue(expenseAmount.getText().toString());
             }
         });
         btn_expense.setOnClickListener(new View.OnClickListener() {
@@ -216,26 +201,17 @@ public class Expense extends AppCompatActivity {
         new_balance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                    dialog_add_balance.show();
-                    Toast.makeText(Expense.this, "Update Card clicked", Toast.LENGTH_SHORT).show();
-                }
+                dialog_add_balance.show();
+                Toast.makeText(Expense.this, "Update Card clicked", Toast.LENGTH_SHORT).show();
+            }
 
         });
         Update_bal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String balance = New_amount.getText().toString();
-
-                if (Long.parseLong(balance) <= 0) {
-                    New_amount.setError("Empty!");
-                } else {
-                    Toast.makeText(Expense.this, " BALANCE UPDATED:" + New_amount, Toast.LENGTH_SHORT).show();
-                    myRef.child("Total Balance").setValue(New_amount.getText().toString());
-                    dialog_add_balance.cancel();
-
-                }
-
+                Toast.makeText(Expense.this, " BALANCE UPDATED:"+New_amount, Toast.LENGTH_SHORT).show();
+               myRef.child("Total Balance").setValue(New_amount.getText().toString());
+               dialog_add_balance.cancel();
             }
         });
 
@@ -252,6 +228,5 @@ public class Expense extends AppCompatActivity {
                 dialog_add_expense.cancel();
             }
         });
-
     }
 }

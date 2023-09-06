@@ -1,17 +1,19 @@
 import React from 'react'
-import Background from '../components/Backgroundnpm star'
-import Logo from '../components/Logo2'
+import Background from '../components/Background'
+import Logo from '../components/Logo'
 import Header from '../components/Header'
+import Paragraph from '../components/Paragraph'
 import Button from '../components/Button'
-import BackCard from '../components/BAckCard'
 
 export default function Dashboard({ navigation }) {
   return (
     <Background>
-      <BackCard>
-      
+      <Logo />
       <Header>Let’s start</Header>
-      
+      <Paragraph>
+        Your amazing app starts here. Open you favorite code editor and start
+        editing this project.
+      </Paragraph>
       <Button
         mode="outlined"
         onPress={() =>
@@ -23,9 +25,6 @@ export default function Dashboard({ navigation }) {
       >
         Logout
       </Button>
-      
-      <Logo />
-      </BackCard>
     </Background>
   )
 }
